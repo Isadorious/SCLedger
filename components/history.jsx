@@ -1,13 +1,21 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, Text } from 'react-native-elements';
+import HistoryCard from './historyCard';
 
-export default function HistoryView() {
+export default function HistoryView(props) {
     return (
         <View style={styles.historyContainer}>
             <View style={styles.historyTitle}>
                 <Text h2>Credit History</Text>
                 <Divider />
+                {
+                    props.history.map((historyItem, index) => {
+                        return (
+                            <HistoryCard key={index} history={historyItem} />
+                        )
+                    })
+                }
             </View>
         </View>
     )
@@ -16,7 +24,6 @@ export default function HistoryView() {
 const styles = StyleSheet.create({
     historyContainer: {
         flex: 1,
-        backgroundColor: 'pink',
     },
     lineRule: {
         borderBottomColor: 'black',
