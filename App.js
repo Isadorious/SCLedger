@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { ThemeProvider, Input, Button, Text } from 'react-native-elements';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { ThemeProvider, Input, Button, Text, Divider } from 'react-native-elements';
 import Header from './components/header';
+import HistoryView from './components/history';
 
 class App extends React.Component {
   state = {
@@ -14,13 +15,25 @@ class App extends React.Component {
   }
 
   addCredits = async () => {
-    const newCredits = this.state.credits + parseInt(this.state.creditAmount);
-    this.setState({ credits: newCredits });
-  }
+    let historyItem = {};
+    const creditAmount = parseInt(this.state.creditAmount);
 
-  removeCredits = async () => {
-    const newCredits = this.state.credits - parseInt(this.state.creditAmount);
-    this.setState({ credits: newCredits });
+    if (creditAmount === 0) {
+      alert("Please enter a value greater or less than 0");
+      return;
+    }
+
+    const newCredits = this.state.credits + creditAmount;
+
+    if (creditAmount < 0) historyItem.reason = `Purchases`;
+    if (creditAmount > 0) historyItem.reason = `Earnings`;
+    historyItem.creditAmount = creditAmount;
+    historyItem.dateTime = new Date;
+
+    let history = this.state.history;
+    history.splice(0, 0, historyItem); // Push onto start of the array
+
+    this.setState({ credits: newCredits, history: history });
   }
 
   render() {
@@ -29,7 +42,7 @@ class App extends React.Component {
         <Header />
         <View style={styles.container}>
           <View stle={styles.aUECDisplay}>
-            <Text h1 style={styles.aUECDisplay}>{this.state.credits}</Text>
+            <Text h1 style={styles.aUECDisplay}>{this.state.credits} aUEC</Text>
           </View>
           <View style={styles.textInputContainer}>
             <Input
@@ -41,10 +54,9 @@ class App extends React.Component {
             />
             <Button onPress={this.addCredits} containerStyle={styles.aUECButton} title="Update" />
           </View>
-          <View style={styles.filler}>
-            {// Filler of 5 flex
-            }
-          </View>
+          <ScrollView style={styles.filler}>
+            <HistoryView history={this.state.history} />
+          </ScrollView>
         </View>
       </ThemeProvider>
     );
