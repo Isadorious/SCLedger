@@ -3,11 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Card, Divider, Text } from 'react-native-elements';
 
 export default function HistoryCard(props) {
+    const dateTime = `${props.history.dateTime}`
     return (
         <View>
             <Card title={props.history.reason}>
-                <Text>{this.props.creditAmount}</Text>
-                <Text>{this.props.dateTime}</Text>
+                <Text>{props.history.creditAmount}</Text>
+                <Text>{dateTime}</Text>
             </Card>
         </View>
     )
