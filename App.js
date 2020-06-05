@@ -52,7 +52,7 @@ function App() {
           <Button onPress={addCredits} containerStyle={styles.aUECButton} title="Update" />
         </View>
         <ScrollView style={styles.filler}>
-          <HistoryView history={creditHistory} />
+          <HistoryView creditHistory={creditHistory} />
         </ScrollView>
       </View>
     </ThemeProvider>

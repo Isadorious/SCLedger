@@ -10,7 +10,7 @@ export default function HistoryView(props) {
                 <Text h2>Credit History</Text>
                 <Divider />
                 {
-                    props.history.map((historyItem, index) => {
+                    props.creditHistory.map((historyItem, index) => {
                         return (
                             <HistoryCard key={index} history={historyItem} />
                         )
