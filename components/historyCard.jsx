@@ -7,7 +7,7 @@ export default function HistoryCard(props) {
     return (
         <View>
             <Card title={props.history.reason}>
-                <Text>{props.history.creditAmount}</Text>
+                <Text>{props.history.creditModifier}</Text>
                 <Text>{dateTime}</Text>
             </Card>
         </View>
