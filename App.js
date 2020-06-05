@@ -1,66 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemeProvider, Input, Button, Text, Divider } from 'react-native-elements';
 import Header from './components/header';
 import HistoryView from './components/history';
 
-class App extends React.Component {
-  state = {
-    credits: 0,
-    creditAmount: '0',
-    history: [],
-  }
+function App() {
 
-  async componentDidMount() {
-  }
+  const [creditTotal, setCreditTotal] = useState(0);
+  const [creditModifier, setCreditModifier] = useState('');
+  const [creditHistory, setCreditHistory] = useState([]);
 
-  addCredits = async () => {
+  async function addCredits() {
     let historyItem = {};
-    const creditAmount = parseInt(this.state.creditAmount);
+    const creditModifierAsInt = parseInt(creditModifier);
 
-    if (creditAmount === 0) {
+    if (creditModifierAsInt === 0) {
       alert("Please enter a value greater or less than 0");
       return;
     }
 
-    const newCredits = this.state.credits + creditAmount;
+    const newCreditTotal = creditTotal + creditModifierAsInt;
 
-    if (creditAmount < 0) historyItem.reason = `Purchases`;
-    if (creditAmount > 0) historyItem.reason = `Earnings`;
-    historyItem.creditAmount = creditAmount;
+    if (creditModifierAsInt < 0) historyItem.reason = `Purchases`;
+    if (creditModifierAsInt > 0) historyItem.reason = `Earnings`;
+    historyItem.creditModifier = creditModifierAsInt;
     historyItem.dateTime = new Date;
 
-    let history = this.state.history;
+    let history = creditHistory;
     history.splice(0, 0, historyItem); // Push onto start of the array
 
-    this.setState({ credits: newCredits, history: history });
+    setCreditTotal(newCreditTotal);
+    setCreditHistory(history);
   }
 
-  render() {
-    return (
-      <ThemeProvider>
-        <Header />
-        <View style={styles.container}>
-          <View stle={styles.aUECDisplay}>
-            <Text h1 style={styles.aUECDisplay}>{this.state.credits} aUEC</Text>
-          </View>
-          <View style={styles.textInputContainer}>
-            <Input
-              label='aUEC'
-              value={`${this.state.creditAmount}`}
-              onChangeText={value => this.setState({ creditAmount: value })}
-              containerStyle={{ width: 270 }}
-              inputStyle={{ textAlign: "right" }}
-            />
-            <Button onPress={this.addCredits} containerStyle={styles.aUECButton} title="Update" />
-          </View>
-          <ScrollView style={styles.filler}>
-            <HistoryView history={this.state.history} />
-          </ScrollView>
+  return (
+    <ThemeProvider>
+      <Header />
+      <View style={styles.container}>
+        <View stle={styles.aUECDisplay}>
+          <Text h1 style={styles.aUECDisplay}>{creditTotal} aUEC</Text>
         </View>
-      </ThemeProvider>
-    );
-  }
+        <View style={styles.textInputContainer}>
+          <Input
+            label='aUEC'
+            value={`${creditModifier}`}
+            onChangeText={value => setCreditModifier(value)}
+            containerStyle={{ width: 270 }}
+            inputStyle={{ textAlign: "right" }}
+            placeholder="0"
+          />
+          <Button onPress={addCredits} containerStyle={styles.aUECButton} title="Update" />
+        </View>
+        <ScrollView style={styles.filler}>
+          <HistoryView creditHistory={creditHistory} />
+        </ScrollView>
+      </View>
+    </ThemeProvider>
+  );
 }
 
 const styles = StyleSheet.create({
